@@ -8,3 +8,9 @@ Stage 1. Naming conventions
 -rename 'rezultat'
 -rename 'valoare'
 -format your code
+
+-remove the hard-coded values aka "magic numbers" 
+
+-validate your input values 
+
+-replace the if-then-else with switch
