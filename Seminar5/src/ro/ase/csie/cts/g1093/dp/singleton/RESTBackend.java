@@ -42,4 +42,16 @@ public class RESTBackend {
 	}
 	
 	
+	//lazy-instantion example
+	/*
+		public static synchronized  RESTBackend getRESTBackend(String url, String data) { 
+			if(theBackend == null) { 
+				theBackend = new RESTBackend(url, data); 
+			}
+			
+			return theBackend;
+		}
+		
+	 */
+	
 }

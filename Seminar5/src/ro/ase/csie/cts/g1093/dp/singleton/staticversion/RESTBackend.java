@@ -20,6 +20,8 @@ public class RESTBackend {
 		
 	}
 	
+	
+	//another block
 	{
 		System.out.println("Is executed before any constructor call");
 	}
