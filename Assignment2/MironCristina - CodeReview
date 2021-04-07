@@ -1,0 +1,94 @@
+Miron Cristina Stefania Gr 1093 Code Review File
+
+****** MEANINGFUL NAMES ******
+ 
+ 1. From the beginning we can notice a mix of naming conventions - camelCase and snake case
+ ---> best-practice is to use only one naming convention in the source code, so variables names were change according to camelCase convention
+ 
+ 2. Some variables and methods names are poorly named, they do not express clearly what is their meaning or purpose
+    
+    The following were renamed: 
+   - rate -> monthlyRate
+   - setValue -> setLoanValue
+   - calculate -> calculateTotalFee
+   - to_string -> toString
+   
+     
+****** FORMATTING & CODE STRUCTURE ******
+ 
+ 3. The code position is not appropriate, for instance the constructor is placed at the end of the class
+---> the constructor was repositioned right under declaration of attributes
+	
+
+4. Multiple variables are declared on a single line
+---> each variable must be declared on a single line, even if it has the same type as the previous one. This gives code readability
+ 
+  	
+5. Inconsistent code indentation 
+---> indentation for all attributes ad methods fixed
+
+ 	
+6. Some if and else blocks are not enclosed in curly braces because they have only one line of code
+---> enclosed all blocks in curly braces { }
+ 
+****** COMMENTS ******
+ 
+7. Some comments are rather useless since they do not provide valuable information and don't bring any value to the people reading the code
+---> delete all useless comments
+
+
+****** GENERAL PROGRAMMING ******
+
+8. Inconsistent use of the "this" keyword 
+---> put it in all places that miss it 
+
+   
+9. The getters for "loan" and "rate" both return the value and print a string to the console which is not necessary 
+---> getters should only return the value they are supposed to return, so the print statements were removed
+
+10.  The "print" method declares and initializes a variable that is never used and also prints a useless message
+---> deleted it completely since it does not bring any value to the program
+
+11. There are a lot of hard-coded values, such as broker's fee and 365 days a year
+---> they are replaced with private static final variables
+	
+	BROKER_FEE
+	DAYS_PER_YEAR
+
+12. There are many variables declared and not used inside methods
+	- "temp" in "calculate" method
+	- "vb" in "print"
+	-> they are deleted completely since it's only a waste of memory
+    
+    
+13. The "daysActive" field is not initialized in the constructor and neither has a setter, so it will return a null exception when it is used because it is not set anywhere
+---> include the daysActive in the constructor parameters	
+	
+14. In the method "calculate" the account variable is rather redundant, since it can be used accounts[i]
+---> deleted the variable and used instead accounts[i]
+	
+****** SECURITY ******
+
+15. There are getter functions for public variables, which is redundant 
+---> best practice is to have private fields, and for each of them implement accessor methods 
+ 
+16. Only a few accessor methods are implemented
+---> after making the variables private, all the getters must be implemented
+
+         
+****** EXCEPTIONS ******
+
+17. The "loanValue" is validated in two places and it is returned a generic Exception that does not give a lot of information about the problem 
+--->  a custom exception was created to be thrown instead of the generic one -> InvalidLoanValueException
+ 
+****** CLASSES AND INTERFACES ******
+
+18. An interface was created to handle the validation of the loan value, along with a service class that provides an implementation for the method in the interface
+
+****** ENUMS AND ANNOTATIONS ******
+
+19. Place the variables STANDARD, BUDGET, PREMIUM and SUPER_PREMIUM in a separate enum file rather than leave them as static final ints
+---> the enum file "AccountTypes" was created
+
+20. The "to_string" method must be renamed to "toString" (using camelCase) and marked with an @Override annotation
+ 

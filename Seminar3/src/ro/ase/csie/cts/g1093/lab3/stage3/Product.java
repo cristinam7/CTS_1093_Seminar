@@ -46,8 +46,6 @@ public class Product {
 		}
 		this.mkService = mkService;
 	}
-
-	
 	
 	public static float getPriceWithDiscount(float initialPrice, float discountValue) { 
 		return initialPrice - (discountValue * initialPrice);
