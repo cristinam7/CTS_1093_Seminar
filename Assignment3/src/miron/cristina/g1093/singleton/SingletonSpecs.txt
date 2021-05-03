@@ -1,0 +1,21 @@
+Project title: Book Swap Platform
+
+Project purpose: The project is an actual web application where users can create an account and post books that they are willing to lend out or 
+search for books that they would like to have without having to pay money for it. If it finds a book that is appealing an would like to get it, 
+one user can contact the other and establish a meeting point. The platform creates a community where its users can swap among them. 
+
+Description of the problem solved by singleton approach: All the data are posted and retrieve from a database, for which we need to create a unique
+connection shared by all the users. 
+
+Advantages: 
+-centralized management of the resource
+-an unique instance of the database connection is created, duplicates are not allowed
+-can be used with lazy instantiation which only created the object when it is needed, and not before that
+
+Disadvantages: 
+-the getInstance method is declared asynchronous, which might cause unexpected behavior of the app 
+-the performance of the application may be affected because the threads wait for the others to finish and if a lot of requests are received at once
+it might become a bottleneck for the app
+
+
+

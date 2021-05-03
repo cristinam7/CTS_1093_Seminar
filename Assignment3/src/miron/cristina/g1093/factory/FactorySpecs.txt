@@ -1,0 +1,15 @@
+Project title: Book Swap Platform
+
+Description of the problem to be solved by factory approach: The items that can be posted by users on this platform can be of different kinds, 
+	and another classification, besides the one after the topic they approach could be after their type. 
+	The 4 main types of books that can be added are dictionaries, magazines, encyclopedias or classical books. 
+	We need to have a way of creating these different types in a centralized manner. Each of the type must have a title and a 
+	field, and each type has separately a distinct attribute from one another.
+		
+Advantages:
+-more book types can be added to the factory very easily
+-the objects are not created straight through constructors, factory methods are used 
+ 	
+Disadvantages:
+-new objects can't be created
+-all constructors are private so the classes cannot be extended

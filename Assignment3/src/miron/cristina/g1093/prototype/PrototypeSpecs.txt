@@ -1,0 +1,16 @@
+Project title: Book Swap Platform
+
+Description of the problem to be solved by prototype approach: The best way that users could filter books is by title, since most readers are 
+		particularly interested in one topic or category of books. When a book is added by one user that wishes to give it away, 
+		the same Book Category is created every time and it is time consuming due to the database request. 
+		The solution we are looking for is to be able to use the same category created for previous books for the new ones in a way that
+		does not affect the application's performance. 
+		
+
+Advantages: 
+-it prevents from doing a lot of requests over the database
+-the object are created very fast through cloning, almost imediatly
+-when objects are created using this approach, the constructor is not called
+
+Disadvantages: 
+-shallow copies might be created which could lead to strange behavior of the app

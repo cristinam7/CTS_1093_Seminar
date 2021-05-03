@@ -1,0 +1,15 @@
+Project title: Book Swap Platform
+
+Description of the problem: The users of this web app have the possibility to post or search for books. 
+							Any book has multiple attributes,in order to provide as much useful information as possible
+							to those looking for it, but only two fields are considered mandatory 
+							since they are the two main ways they can search for books: by title or category.
+	
+Advantages:
+ -very useful in creating complex objects(with a lot of attributes) because they can be created independent of their components
+ -it gives a lot of flexibility in object creation, since not all the fields need to be initialized when the object is created
+
+ 	
+Disadvantages:
+-attributes might be left uninitialized
+-the uninitialized fields might cause null pointer exception later in the program if those fields are accessed
