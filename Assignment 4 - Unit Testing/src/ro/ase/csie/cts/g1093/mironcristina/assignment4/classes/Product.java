@@ -2,6 +2,7 @@ package ro.ase.csie.cts.g1093.mironcristina.assignment4.classes;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import ro.ase.csie.cts.g1093.mironcristina.assignment4.exceptions.WrongProductNameException;
 import ro.ase.csie.cts.g1093.mironcristina.assignment4.exceptions.WrongProductPriceValueException;
@@ -22,9 +23,7 @@ import ro.ase.csie.cts.g1093.mironcristina.assignment4.exceptions.WrongProductWe
  * 
  * 
  */
-
 public class Product {
-	
 	
 	public static final int NAME_MIN_LENGTH = 5;
 	public static final int NAME_MAX_LENGTH = 200;
@@ -32,7 +31,6 @@ public class Product {
 	public static final float PRICE_MAX_VALUE = 100000;
 	public static final int SOLD_ITEMS_MIN_VALUE = 0;
 	public static final int SOLD_ITEMS_MAX_VALUE = 1000;
-	
 	
 	private String name;
 	private float price;
@@ -49,23 +47,58 @@ public class Product {
 									WrongProductWeeklySalesExecption {
 		setName(name);
 		this.price = price;
-		this.weeklySoldItems = new ArrayList<Integer>();
 		setSales(soldItems);
 	}
 	
-	public void setSales(ArrayList<Integer> soldItems) throws WrongProductWeeklySalesExecption {
+	
+	boolean checkIfStringContainsSpecialCharacer(String s) { 
 		
+		String specialCharactersString = "!@#$%&*()'+,-./:;<=>?[]^_`{|}";
+		for(int i = 0 ; i < s.length() ; i++) { 
+			 char ch = s.charAt(i);
+			 if(specialCharactersString.contains(Character.toString(ch))) { 
+				 return true; 
+			 }
+		 }	
+		return false;
+	}
+	
+	public void setName(String name) throws WrongProductNameException {
+		if(name.length() < NAME_MIN_LENGTH || name.length() > NAME_MAX_LENGTH 
+				|| (checkIfStringContainsSpecialCharacer(name) == true)) 
+		{ 
+			throw new WrongProductNameException(); 
+		}
+		
+		this.name = name;
+	}
+
+	public void setPrice(float price) throws WrongProductPriceValueException {
+		if(price < PRICE_MIN_VALUE || price > PRICE_MAX_VALUE) { 
+			throw new WrongProductPriceValueException(); 
+		}
+		this.price = price;
+	}	
+	
+	public int getSalesNumber() { 
+		return this.weeklySoldItems.size();
+	}
+	
+	public int getMaxSales()  { 
+		return Collections.max(this.weeklySoldItems);
+	}
+	
+	
+	public void setSales(ArrayList<Integer> soldItems) throws WrongProductWeeklySalesExecption {	
 		if(soldItems == null)
 		{ 
 			throw new WrongProductWeeklySalesExecption(); 
-		}
-		
+		}		
 		for(Integer i : soldItems) { 
 			if(i < SOLD_ITEMS_MIN_VALUE || i >  SOLD_ITEMS_MAX_VALUE) { 
 				throw new WrongProductWeeklySalesExecption(); 
 			}
-		}
-			
+		}			
 		this.weeklySoldItems = (ArrayList<Integer>) soldItems.clone();
 	}
 
@@ -77,11 +110,22 @@ public class Product {
 		return this.price;
 	}
 	
-	public void addWeek(int soldItems){
+	public void addWeek(int soldItems) throws WrongProductWeeklySalesExecption{
+		if(this.weeklySoldItems == null) { 
+			throw new WrongProductWeeklySalesExecption(); 
+		}
+		if (soldItems < SOLD_ITEMS_MIN_VALUE || soldItems > SOLD_ITEMS_MAX_VALUE) { 
+			throw new WrongProductWeeklySalesExecption(); 
+		}
+		
 		weeklySoldItems.add(soldItems);
 	}
 	
-	public int getSoldItems(int i){
+	public int getSoldItems(int i) throws WrongProductWeeklySalesExecption{
+		
+		if(this.weeklySoldItems.isEmpty() || i < 0 || i >= this.weeklySoldItems.size()) { 
+			throw new WrongProductWeeklySalesExecption(); 
+		}
 		return weeklySoldItems.get(i);
 	}
 	
@@ -91,12 +135,17 @@ public class Product {
 	 * determina numarul de saptamani in care au fost vandute un numar de produse peste limita data
 	 * 
 	 */
-	public int getNoWeeksAboveLimit(int minLimit){
+	public int getNoWeeksAboveLimit(int minLimit) throws WrongProductWeeklySalesExecption{
+		if (this.weeklySoldItems.isEmpty()) {
+			throw new WrongProductWeeklySalesExecption();
+		}
+		if (minLimit < SOLD_ITEMS_MIN_VALUE || minLimit > SOLD_ITEMS_MAX_VALUE) {
+			throw new WrongProductWeeklySalesExecption();
+		}
 		int noWeeks = 0;
-		for(int n: weeklySoldItems)
-			if(n >= minLimit)
+		for (int n : weeklySoldItems)
+			if (n > minLimit)
 				noWeeks++;
-		noWeeks++;
 		return noWeeks;
 	}
 	
@@ -106,11 +155,18 @@ public class Product {
 	 * determina procentul saptamanilor (din total saptamani) care au avut vanzari sub limita data
 	 * 
 	 */
-	public int getPercentOfBadWeeks(int minLimit){
+	public int getPercentOfBadWeeks(int minLimit) throws WrongProductWeeklySalesExecption{
+		
+		if(this.weeklySoldItems.isEmpty()) { 
+			throw new WrongProductWeeklySalesExecption();
+		}
+		if (minLimit < SOLD_ITEMS_MIN_VALUE || minLimit > SOLD_ITEMS_MAX_VALUE) {
+			throw new WrongProductWeeklySalesExecption();
+		}
 		float m = 0;
-		for(Integer n: weeklySoldItems)
-			if(n > minLimit)
-				m += n;
+		for (Integer n : this.weeklySoldItems)
+			if (n < minLimit)
+				m = m + 1;
 		
 		return (int) (100 * m / this.weeklySoldItems.size());
 	}
@@ -143,36 +199,7 @@ public class Product {
 		return output;
 	}
 
-	boolean checkIfStringContainsSpecialCharacer(String s) { 
-		
-		String specialCharactersString = "!@#$%&*()'+,-./:;<=>?[]^_`{|}";
-		for(int i = 0 ; i < s.length() ; i++) { 
-			 char ch = s.charAt(i);
-			 if(specialCharactersString.contains(Character.toString(ch))) { 
-				 return true; 
-			 }
-		 }	
-		return false;
-	}
-	
-	public void setName(String name) throws WrongProductNameException {
-		if(name.length() < NAME_MIN_LENGTH || name.length() > NAME_MAX_LENGTH 
-				|| (checkIfStringContainsSpecialCharacer(name) == true)) 
-		{ 
-			throw new WrongProductNameException(); 
-		}
-		
-		this.name = name;
-	}
 
-	public void setPrice(float price) throws WrongProductPriceValueException {
-		if(price < PRICE_MIN_VALUE || price > PRICE_MAX_VALUE) { 
-			throw new WrongProductPriceValueException(); 
-		}
-		this.price = price;
-	}	
-	
-	
 	
 	
 }

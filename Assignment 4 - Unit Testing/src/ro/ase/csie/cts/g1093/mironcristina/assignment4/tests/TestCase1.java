@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import ro.ase.csie.cts.g1093.mironcristina.assignment4.classes.Product;
 import ro.ase.csie.cts.g1093.mironcristina.assignment4.exceptions.WrongProductNameException;
@@ -21,16 +22,16 @@ public class TestCase1 {
 
 	
 	static Product product; 
-	static String name = "DefaultProduct"; 
-	static float price = 10f; 
-	private static ArrayList<Integer> itemsSoldPerWeek;
+	static String name = "Puzzle"; 
+	static float price = 25.5f; 
+	private static ArrayList<Integer> sales;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		itemsSoldPerWeek = new ArrayList<Integer>();
-		itemsSoldPerWeek.add(50);
-		itemsSoldPerWeek.add(84);
-		itemsSoldPerWeek.add(22);
+		sales = new ArrayList<Integer>();
+		sales.add(50);
+		sales.add(84);
+		sales.add(22);
 		
 	
 	}
@@ -42,7 +43,7 @@ public class TestCase1 {
 	@Before
 	public void setUp() throws Exception {
 		
-		product = new Product(name, price, itemsSoldPerWeek);
+		product = new Product(name, price, sales);
 	}
 
 	@After
@@ -55,67 +56,66 @@ public class TestCase1 {
 		fail("Not yet implemented");
 	}
 	
-	
-	//test for name conformance for the first constructor, the one with only 2 params
+	@Category(RightTests.class)
 	@Test
 	public void testConstructorNameConformanceForRightInput() throws WrongProductNameException, WrongProductPriceValueException { 
 		
-		//expected 
 		String expectedName = "Shampoo";
 		Product prod = new Product(expectedName, price); 
-	
-		assertEquals(expectedName, prod.getName());	
+		assertEquals("Testing constructor with 2 params name conformance",expectedName, prod.getName());	
 	}
 	
-	
+	@Category(RightTests.class)
 	@Test
 	public void testConstructorPriceConformanceForRightInput() throws WrongProductNameException, WrongProductPriceValueException { 
-		
-		//expected 
+		 
 		String expectedName = "Shampoo";
 		float expectedPrice = 15.5f;
 		Product prod = new Product(expectedName, expectedPrice); 
-	
-		assertEquals(expectedPrice, prod.getPrice(), 0);	
+		assertEquals("Testing constructor with 2 params for price conformance",expectedPrice, prod.getPrice(), 0);	
 	}
 	
+	@Category(RightTests.class)
 	@Test
-	public void testConstructorWith3ParametersNameConformanceRightInput() throws WrongProductNameException, WrongProductPriceValueException, WrongProductWeeklySalesExecption { 
-		
-		//expected 
+	public void testConstructorWith3ParametersNameConformanceRightInput() throws WrongProductNameException,
+														WrongProductPriceValueException, WrongProductWeeklySalesExecption { 
 		String expectedName = "ProductName";
-		Product prod = new Product(expectedName, price,itemsSoldPerWeek); 
-		
+		Product prod = new Product(expectedName, price,sales); 		
 		String actualName = prod.getName();
-	
-		assertEquals("Testing with the right input name",expectedName, actualName);	
+		assertEquals("Testing onstructor with 3 params for name conformance",expectedName, actualName);	
 	}
 	
-	
-	
+	@Category(RightTests.class)
+	@Test
+	public void testConstructorWith3ParametersPriceConformanceRightInput() throws WrongProductNameException,
+														WrongProductPriceValueException, WrongProductWeeklySalesExecption { 
+		float expectedPrice = 32.2f;
+		Product prod = new Product(name, expectedPrice,sales); 		
+		assertEquals(expectedPrice, prod.getPrice(), 0);
+	}
+		
 	//ERROR CONDITONS
 	
 	@Test(expected = WrongProductNameException.class)
 	public void testConstructorWith2ParametersNameErrorCondition() throws WrongProductNameException, WrongProductPriceValueException {
 		
-		String productName = "Pro";
-		Product newProduct = new Product(productName, price);		
+		String shortName = "Pro";
+		Product newProduct = new Product(shortName, price);		
 	}
 	
 	@Test(expected = WrongProductPriceValueException.class)
 	public void testConstructorWith2ParametersProductPriceErrorCondition() throws WrongProductPriceValueException, WrongProductNameException { 
 		
 		float highPrice = Product.PRICE_MAX_VALUE + 10; 
-		Product newProduct = new Product(name, highPrice);
-		
+		Product newProduct = new Product(name, highPrice);	
 	}
 	
 	
 	@Test(expected = WrongProductNameException.class)
 	public void testConstructorWith3ParametersNameErrorCondition() throws WrongProductNameException, WrongProductWeeklySalesExecption {
 		
-		String productName = "Product#Name@";
-		Product newProduct = new Product(productName, price,itemsSoldPerWeek);		
+		String productName = "Product#N@me_"; 
+		Product newProduct = new Product(productName, price,sales);		
 	}
 	
 	@Test(expected = WrongProductWeeklySalesExecption.class)
@@ -128,8 +128,6 @@ public class TestCase1 {
 			
 	}
 	
-	//TODO : revino aici ?! not sure if its right
-	//reference test for the constructor that takes the arrayList 
 	@Test 
 	public void testConstructor3ParametersArrayListReference() throws WrongProductNameException, WrongProductWeeklySalesExecption { 
 		ArrayList<Integer> inputSales = new ArrayList<Integer>();
@@ -142,8 +140,7 @@ public class TestCase1 {
 		
 		for(int i = 0 ; i < cloneSales.size() ; i++) { 
 			assertEquals(cloneSales.get(i), newProduct.getSoldItems(i), 0);
-		}
-		
+		}	
 	}
 	
 	@Test(expected = WrongProductWeeklySalesExecption.class)
@@ -152,31 +149,23 @@ public class TestCase1 {
 		Product prod = new Product(name, price, nullSales);
 	}
 	
-	
-	
-	//setSales Reference test
 	@Test
 	public void testSetSalesReference() throws WrongProductWeeklySalesExecption { 
 		
 		ArrayList<Integer> newSales = new ArrayList<Integer>(); 
 		newSales.add(30);
-		newSales.add(150);
-		newSales.add(55);
+		newSales.add(40);
 		product.setSales(newSales);
 		
 		ArrayList<Integer> cloneSales = (ArrayList<Integer>) newSales.clone();
-		newSales.set(2, Product.SOLD_ITEMS_MIN_VALUE + 10); 
+		newSales.set(1, Product.SOLD_ITEMS_MIN_VALUE + 10); 
 		
-		assertNotEquals(cloneSales.get(2), newSales.get(2));	
+		assertNotEquals(cloneSales.get(1), newSales.get(1));	
 	}
 
-	
-	//setSales Existence test 
 	@Test(expected = WrongProductWeeklySalesExecption.class)
-	public void testSetSalesExistenceNullReferencePassed() throws WrongProductWeeklySalesExecption { 	
+	public void testSetSalesExistence() throws WrongProductWeeklySalesExecption { 	
 		ArrayList<Integer> nullSales = null;
 		product.setSales(nullSales);	
 	}
-	
-
 }
